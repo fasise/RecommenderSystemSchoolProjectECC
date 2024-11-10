@@ -21,10 +21,11 @@ Dans ce projet,nous avons utilisé Python 3.12.7
    ```bash
    .\env\Scripts\activate
 4.  Installer les bibiliothèques  :
-   pip install -r .\requirements.
-5.  Lancer l'application
    ```bash
-   pip install -r .\requirements.
+ pip install -r .\requirements.
+6.  Lancer l'application
+   ```bash
+   python.exe .\app.py
   
 
    
