@@ -23,8 +23,10 @@ Dans ce projet,nous avons utilisé Python 3.12.7
 4.  Installer les bibiliothèques  :
    ```bash
    pip install -r .\requirements.
-5.  Lancer l'application :
+5. Lancer l'application  :
    ```bash
-   python.exe .\app.py
+  python.exe .\app.py
+
+  
 
    
