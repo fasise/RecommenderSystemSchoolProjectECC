@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommandation de Produits</title>
+    <style>
+        /* Votre CSS pour un design propre, inspiré de votre exemple précédent */
+        :root {
+            --primary-color: #4e73df; /* Bleu principal */
+            --secondary-color: #1cc88a; /* Vert */
+            --light-color: #f8f9fc; /* Gris clair */
+            --dark-color: #343a40; /* Gris foncé */
+            --background-color: #f4f6f9; /* Gris clair de fond */
+            --border-color: #e3e6f0; /* Bordure douce */
+            --hover-color: #2c9faf; /* Couleur au survol */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            max-width: 1200px;
+            text-align: center;
+            margin-top: auto;
+            margin-bottom:auto;
+
+
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-size: 1rem;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+            display: block;
+            text-align: left;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: #ffffff;
+            color: var(--dark-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        select:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        #userInfo {
+            margin-top: 40px;
+            cursor: pointer;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .product-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .product {
+            background-color: var(--light-color);
+            border-radius: 8px;
+            width: 160px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .product img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .product-name {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--dark-color);
+            margin-top: 15px;
+        }
+
+        .similarity-score {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            margin-top: 8px;
+        }
+
+        .partiestatique {
+    margin-bottom: 30px; /* Ajoute un espace sous la partie statique */
+}
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="partiestatique">
+    <h1>Recommandation de Produits</h1>
+
+    <!-- Liste déroulante des utilisateurs -->
+    <label for="userSelect">Choisir un utilisateur :</label>
+    <select id="userSelect" onchange="updateUserInfo()">
+        <option value="">Sélectionner un utilisateur</option>
+        {% for user in users %}
+            <option value="{{ user.id }}">{{ user.name }}</option>
+        {% endfor %}
+    </select>
+  </div>
+
+    <div id="userInfo">
+        <!-- Les informations des produits seront affichées ici -->
+    </div>
+</div>
+
+<script>
+function updateUserInfo() {
+    const userId = document.getElementById('userSelect').value;
+    if (!userId) {
+        document.getElementById('userInfo').innerHTML = '';
+        return;
+    }
+
+    fetch(`/recommender/${userId}`)
+        .then(response => {
+            console.log("Réponse du serveur:", response); // Ajoutez un log pour inspecter la réponse
+            if (!response.ok) {
+                throw new Error("Réponse du serveur non valide");
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Données reçues de l'API:", data); // Log pour inspecter les données
+            const userInfoDiv = document.getElementById('userInfo');
+            let htmlContent = `
+                <h2>Produits Achetés</h2>
+                <div class="product-list">`;
+
+            // Affichage des produits achetés
+            data.boughtProducts.forEach(product => {
+                htmlContent += `
+                    <div class="product">
+                        <img src="${product.image}" alt="${product.name}" />
+                        <div class="product-name">${product.name}</div>
+                        <div class="similarity-score">Score: ${product.similarity}</div>
+                    </div>`;
+            });
+
+            htmlContent += `</div><h2>Produits Recommandés</h2><div class="product-list">`;
+
+            // Affichage des produits recommandés, en vérifiant les valeurs "nan"
+            data.recommendedProducts.forEach(product => {
+                // Vérifier si l'image ou le nom est "nan" et les ignorer ou afficher un texte par défaut
+                if (product.name !== "nan" && product.image !== "nan") {
+                    htmlContent += `
+                        <div class="product">
+                            <img src="${product.image}" alt="${product.name}" />
+                            <div class="product-name">${product.name}</div>
+                            <div class="similarity-score">Score: ${product.similarity}</div>
+                        </div>`;
+                }
+            });
+
+            htmlContent += `</div>`;
+            userInfoDiv.innerHTML = htmlContent;
+        })
+        .catch(error => {
+            console.error('Erreur lors de la récupération des données:', error);
+            document.getElementById('userInfo').innerHTML = '<p>Une erreur est survenue lors de la récupération des données.</p>';
+        });
+}
+
+</script>
+
+</body>
+</html>
