@@ -20,17 +20,9 @@ Dans ce projet,nous avons utilisé Python 3.12.7
 3. Activer un environnement virtuel :
    ```bash
    .\env\Scripts\activate
-4.  Installer les bibiliothèques  :
-5.  1. Clonez le repository :
+4.  Installer les bibiliothèques  et Lancer l'application
    ```bash
-   git clone https://github.com/votre-utilisateur/nom-du-projet.git](https://github.com/fasise/https---github.com-fasise-RecommenderSystemSchoolProjectECC
-2. Créer un environnement virtuel :
-   ```bash
-   git python.exe -m venv env
-   ```bash
- pip install -r .\requirements.
-6.  Lancer l'application
-   ```bash
+   pip install -r .\requirements.txt
    python.exe .\app.py
   
 
