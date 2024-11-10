@@ -12,17 +12,17 @@ def model_final(user_id):
     )
 
 # Charger la fonction `model_final` depuis le fichier pickle
-with open('model_content_based_recommendation.pkl', 'rb') as f:
+with open('./models/model_content_based_recommendation.pkl', 'rb') as f:
     model_final = pickle.load(f)
 
 # Charger les objets nécessaires
-with open('data.pkl', 'rb') as f:
+with open('./models/data.pkl', 'rb') as f:
     dfc = pickle.load(f)
 
-with open('matrice_tfidf.pkl', 'rb') as f:
+with open('./models/matrice_tfidf.pkl', 'rb') as f:
     tfidf_clean = pickle.load(f)
 
-with open('Profiles_users.pkl', 'rb') as f:
+with open('./models/Profiles_users.pkl', 'rb') as f:
     user_profiles_normalized = pickle.load(f)
 
 # print(user_profiles_normalized)
