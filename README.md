@@ -15,8 +15,7 @@ Dans ce projet,nous avons utilisé Python 3.12.7
    ```bash
    git clone [https://github.com/votre-utilisateur/nom-du-projet.git](https://github.com/fasise/https---github.com-fasise-RecommenderSystemSchoolProjectECC)
 2. Créer un environnement virtuel :
-      ```bash
-python.exe -m venv env
+      ```bash          python.exe -m venv env
 4. Activer un environnement virtuel :
    ```bash
 .\env\Scripts\activate
