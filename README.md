@@ -25,11 +25,6 @@ Dans ce projet,nous avons utilisé Python 3.12.7
 5.  Lancer l'application
    ```bash
    pip install -r .\requirements.
-
-7. Lancer l'application  :
-   ```bash
-  python.exe .\app.py
-
   
 
    
